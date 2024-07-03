@@ -210,18 +210,20 @@ vector<Tile *> Board::getBoartTiles(){
 
 
 // Place a settlement on the board
-void Board::placeSettlement(Player &player, size_t vertexNum)
+bool Board::placeSettlement(Player &player, size_t vertexNum)
 {
     // If the player entered invalid input, throw an exception
     if (vertexNum > 53 || vertexNum < 0)
     {
-        throw invalid_argument("Invalid input, vertex index between 0 to 53");
+        cout<<"Invalid input, vertex index between 0 to 53"<<endl;
+        return false;
     }
 
     // Check if the vertex already has a structure
     if (this->vertices[vertexNum]->getStructure() != nullptr)
     {
-        throw invalid_argument("This place is not available");
+        cout<<"This place is not available"<<endl;
+        return false;
     }
 
     // Check adjacent vertices for existing settlements
@@ -233,7 +235,8 @@ void Board::placeSettlement(Player &player, size_t vertexNum)
         if ((firstVertex == this->vertices[vertexNum] && secondVertex->getStructure() != nullptr) ||
             (secondVertex == this->vertices[vertexNum] && firstVertex->getStructure() != nullptr))
         {
-            throw invalid_argument("This place is not available due to an adjacent settlement");
+            cout<<"This place is not available due to an adjacent settlement"<<endl;
+            return false;
         }
     }
 
@@ -241,16 +244,17 @@ void Board::placeSettlement(Player &player, size_t vertexNum)
     Structure *settlement = new Settlement(player);
     this->vertices[vertexNum]->setStructure(settlement);
     cout<<player.getPlayerName()<<" placed settlement successfully on vertex "<<vertexNum<<endl;
-
+    return true;
 }
 
 // Upgrade a settlement to a city on the board
-void Board::placeCity(Player &player, size_t vertexNum)
+bool Board::placeCity(Player &player, size_t vertexNum)
 {
     // If the player entered invalid input, throww an exception
     if (vertexNum > 53 || vertexNum < 0)
     {
-        throw invalid_argument("invalid input, vertex index between 0 to 53");
+        cout<<"invalid input, vertex index between 0 to 53"<<endl;
+        return false;
     }
 
     // Check if the vertex has a settlement owned by the player
@@ -258,21 +262,24 @@ void Board::placeCity(Player &player, size_t vertexNum)
         this->vertices[vertexNum]->getStructure()->getType() != "settlement" ||
         this->vertices[vertexNum]->getStructure()->getOwner()->getPlayerName() != player.getPlayerName())
     {
-        throw invalid_argument("You can build a city only on an existing settlement");
+        cout<<"You can build a city only on an existing settlement"<<endl;
+        return false;
     }
 
     // Create a new city and set it on the vertex
     Structure *city = new City(player);
     this->vertices[vertexNum]->setStructure(city);
     cout<<player.getPlayerName()<<" placed city successfully on vertex "<<vertexNum<<endl;
+    return true;
 }
 
-void Board::placeRoad(Player &player, size_t firstVertex, size_t secondVertex)
+bool Board::placeRoad(Player &player, size_t firstVertex, size_t secondVertex)
 {
     // If the player entered invalid input, throw an exception
     if (firstVertex > 53 || firstVertex < 0 || secondVertex > 53 || secondVertex < 0)
     {
-        throw invalid_argument("Invalid input, vertices indexes between 0 to 53");
+        cout<<"Invalid input, vertices indexes between 0 to 53"<<endl;
+        return false;
     }
 
     // Check if there is a structure belonging to the player in either vertex
@@ -312,9 +319,10 @@ void Board::placeRoad(Player &player, size_t firstVertex, size_t secondVertex)
 
     if (!validPlacement)
     {
-        throw invalid_argument("You can place a road only if the edge is connected to one of your structures or roads!");
+        cout<<"You can place a road only if the edge is connected to one of your structures or roads!"<<endl;
+        return false;
     }
-
+    
     // Search for the edge connecting the two vertices and ensure it's not already occupied
     bool edgeFound = false;
     for (auto &edge : this->edges[firstVertex])
@@ -325,19 +333,20 @@ void Board::placeRoad(Player &player, size_t firstVertex, size_t secondVertex)
             edgeFound = true;
             if (edge->getRoad() != nullptr)
             {
-                throw invalid_argument("There is already a road on this edge!");
+                cout<<"There is already a road on this edge!"<<endl;
+                return false;
             }
             // Create a new road and set it on the edge
             Road *road = new Road(player);
             edge->setRoad(road);
             cout <<player.getPlayerName()<< " placed road successfully between vertices " << firstVertex << " and " << secondVertex << endl;
-          
+            return true;
         }
     }
 
     if (!edgeFound)
     {
-        throw invalid_argument("No edge connects these two vertices!");
+        cout<<"No edge connects these two vertices!"<<endl;
     }
-    
+    return false;
 }

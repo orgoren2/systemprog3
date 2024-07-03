@@ -32,9 +32,9 @@ namespace ariel
         ~Board();
         void initializeBoard();
         void distribueResourcesByDice(int diceRoll);
-        void placeSettlement(Player &player, size_t vertexNum);
-        void placeCity(Player &player, size_t vertexNum);
-        void placeRoad(Player &player, size_t firstVertex, size_t secondVertex);
+        bool placeSettlement(Player &player, size_t vertexNum);
+        bool placeCity(Player &player, size_t vertexNum);
+        bool placeRoad(Player &player, size_t firstVertex, size_t secondVertex);
         vector<Vertex *> getBoardVertices();
         map<size_t, vector<Edge *>> getBoardEdge();
         vector<Tile *> getBoartTiles();

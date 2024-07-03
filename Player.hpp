@@ -36,16 +36,16 @@ namespace ariel
         // Gameplay functions
         void firstTurn(size_t firstSettlement, size_t firstRoad1,size_t firstRoad2, size_t secondSettlement, size_t secondRoad1,size_t secondRoad2);
         int rollDice();
-        void tradeWithBank(string playerResource, string wantedResource);
-        void tradeResourcesWithPlayers(Player &otherPlayer, string playerResource, string otherResource, int giveQuantity, int takeQuantity);
-        void tradeCardsWithPlayers(Player &otherPlayer, string playerCard, string otherResource, int giveQuantity, int takeQuantity);
-        void buyDevelopmentCard();
-        void useMonopolyCard(string wantedResource);
-        void useBuildRoadsCard(size_t sV1, size_t fV1, size_t sV2, size_t fV2);
-        void useAbundantYearCard(string firstWantedCard, string secondWantedCard);
-        void placeSettlement(size_t vertexNum);
-        void placeCity(size_t vertexNum);
-        void placeRoad(size_t firstVertex, size_t secondVertex);
+        bool tradeWithBank(string playerResource, string wantedResource);
+        bool tradeResourcesWithPlayers(Player &otherPlayer, string playerResource, string otherResource, int giveQuantity, int takeQuantity);
+        bool tradeCardsWithPlayers(Player &otherPlayer, string playerCard, string otherResource, int giveQuantity, int takeQuantity);
+        bool buyDevelopmentCard();
+        bool useMonopolyCard(string wantedResource);
+        bool useBuildRoadsCard(size_t sV1, size_t fV1, size_t sV2, size_t fV2);
+        bool useAbundantYearCard(string firstWantedCard, string secondWantedCard);
+        bool placeSettlement(size_t vertexNum);
+        bool placeCity(size_t vertexNum);
+        bool placeRoad(size_t firstVertex, size_t secondVertex);
 
         // Setters and getters
         void setGame(Catan &game);

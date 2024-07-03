@@ -46,63 +46,63 @@ int Player::rollDice()
 }
 
 // Buy a development card using the game instance
-void Player::buyDevelopmentCard()
+bool Player::buyDevelopmentCard()
 {
-    this->game->buyDevelopmentCard(*this);
+    return this->game->buyDevelopmentCard(*this);
 }
 
 // Use a monopoly card using the game instance
-void Player::useMonopolyCard(string wantedResource)
+bool Player::useMonopolyCard(string wantedResource)
 {
-    this->game->useMonopolyCard(*this, wantedResource);
+    return this->game->useMonopolyCard(*this, wantedResource);
 }
 
 // Use a build roads card using the game instance
-void Player::useBuildRoadsCard(size_t sV1, size_t fV1, size_t sV2, size_t fV2)
+bool Player::useBuildRoadsCard(size_t sV1, size_t fV1, size_t sV2, size_t fV2)
 {
-    this->game->useBuildRoadsCard(*this, sV1, fV1, sV2, fV2);
+    return this->game->useBuildRoadsCard(*this, sV1, fV1, sV2, fV2);
 }
 
 // Use an abundant year card using the game instance
-void Player::useAbundantYearCard(string firstWantedCard, string secondWantedCard)
+bool Player::useAbundantYearCard(string firstWantedCard, string secondWantedCard)
 {
-    this->game->useAbundantYearCard(*this, firstWantedCard, secondWantedCard);
+    return this->game->useAbundantYearCard(*this, firstWantedCard, secondWantedCard);
 }
 
 // Place a settlement using the game instance
-void Player::placeSettlement(size_t vertexNum)
+bool Player::placeSettlement(size_t vertexNum)
 {
-    this->game->placeSettlement(*this, vertexNum);
+    return this->game->placeSettlement(*this, vertexNum);
 }
 
 // Place a city using the game instance
-void Player::placeCity(size_t vertexNum)
+bool Player::placeCity(size_t vertexNum)
 {
-    this->game->placeCity(*this, vertexNum);
+    return this->game->placeCity(*this, vertexNum);
 }
 
 // Place a road using the game instance
-void Player::placeRoad(size_t firstVertex, size_t secondVertex)
+bool Player::placeRoad(size_t firstVertex, size_t secondVertex)
 {
-    this->game->placeRoad(*this, firstVertex, secondVertex);
+    return this->game->placeRoad(*this, firstVertex, secondVertex);
 }
 
 // Trade with the bank using the game instance
-void Player::tradeWithBank(string playerResource, string wantedResource)
+bool Player::tradeWithBank(string playerResource, string wantedResource)
 {
-    this->game->tradeWithBank(*this, playerResource, wantedResource);
+    return this->game->tradeWithBank(*this, playerResource, wantedResource);
 }
 
 // Trade resources with other players using the game instance
-void Player::tradeResourcesWithPlayers(Player& otherPlayer, string playerResource, string otherResource, int giveQuantity, int takeQuantity)
+bool Player::tradeResourcesWithPlayers(Player& otherPlayer, string playerResource, string otherResource, int giveQuantity, int takeQuantity)
 {
-    this->game->tradeResourcesWithPlayers(*this, otherPlayer, playerResource, otherResource, giveQuantity, takeQuantity);
+    return this->game->tradeResourcesWithPlayers(*this, otherPlayer, playerResource, otherResource, giveQuantity, takeQuantity);
 }
 
 // Trade cards with other players using the game instance
-void Player::tradeCardsWithPlayers(Player& otherPlayer, string playerCard, string otherResource, int giveQuantity, int takeQuantity)
+bool Player::tradeCardsWithPlayers(Player& otherPlayer, string playerCard, string otherResource, int giveQuantity, int takeQuantity)
 {
-    this->game->tradeCardsWithPlayers(*this, otherPlayer, playerCard, otherResource, giveQuantity, takeQuantity);
+    return this->game->tradeCardsWithPlayers(*this, otherPlayer, playerCard, otherResource, giveQuantity, takeQuantity);
 }
 
 // Set the game instance for the player

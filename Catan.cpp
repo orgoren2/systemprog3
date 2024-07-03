@@ -56,12 +56,12 @@ void Catan::setBoard(Board &board)
 {
     this->board = &board;
 }
-
+//Check if it's the player's turn
 bool Catan::isPlayersTurn(Player &player)
 {
     if (this->currentPlayer->getPlayerName() != player.getPlayerName())
     {
-        throw invalid_argument("It's not your turn");
+        cout<<"It's not your turn"<<endl;
         return false;
     }
     return true;
@@ -79,14 +79,15 @@ bool Catan::checkVictory(Player &player) const
 }
 
 // The player gets a card when buying a development card
-void Catan::buyDevelopmentCard(Player &player)
+bool Catan::buyDevelopmentCard(Player &player)
 {
     if (isPlayersTurn(player))
     {
         // Checking if the player has enough resources to buy a card
         if (player.getResourceCount("Iron") < 1 || player.getResourceCount("Wool") < 1 || player.getResourceCount("Oats") < 1)
         {
-            throw invalid_argument("You don't have enough resources for buying a development card");
+            cout<<"You don't have enough resources for buying a development card"<<endl;
+            return false;
         }
         string card = this->cardsPack->drawCard();
 
@@ -106,7 +107,9 @@ void Catan::buyDevelopmentCard(Player &player)
         // Adding the card to the player's cards pack
         player.addCard(card);
         cout << player.getPlayerName() << " bought " << card << " card" << endl;
+        return true;
     }
+    return false;
 }
 
 // Side function for checking if the player needs to get the biggest army card
@@ -139,14 +142,15 @@ void Catan::checkReduceBiggestArmyCard(Player &player)
 }
 
 // The player takes all the selected resource cards from other players
-void Catan::useMonopolyCard(Player &player, string wantedResource)
+bool Catan::useMonopolyCard(Player &player, string wantedResource)
 {
     if (isPlayersTurn(player))
     {
-        // Checking if the player has monopoly card.  If he doesn't, throw invalid argument
+        // Checking if the player has monopoly card
         if (player.getCardCount("monopoly card") == 0)
         {
-            throw invalid_argument(" You don't have monopoly cards");
+            cout<<" You don't have monopoly cards"<<endl;
+            return false;
         }
 
         else
@@ -163,23 +167,27 @@ void Catan::useMonopolyCard(Player &player, string wantedResource)
                         player.addResource(wantedResource, 1);
                     }
                 }
+                
             }
             // Returning the monopoly card to the game's card pack
             player.reduceCardCount("monopoly card", 1);
             this->cardsPack->increaseCardQuantity("monopoly card");
+            return true;        
         }
     }
+    return false;
 }
 
 // The player gets 2 roads without resources cost
-void Catan::useBuildRoadsCard(Player &player, size_t sV1, size_t fV1, size_t sV2, size_t fV2)
+bool Catan::useBuildRoadsCard(Player &player, size_t sV1, size_t fV1, size_t sV2, size_t fV2)
 {
     if (isPlayersTurn(player))
     {
-        // Checking that the player has the build roads card. If he doesn't, throw invalid argument
+        // Checking that the player has the build roads card
         if (player.getCardCount("build roads card") == 0)
         {
-            throw invalid_argument(" You don't have build roads cards");
+            cout<<" You don't have build roads card"<<endl;
+            return false;
         }
         else
         {
@@ -188,19 +196,22 @@ void Catan::useBuildRoadsCard(Player &player, size_t sV1, size_t fV1, size_t sV2
             // Returning the build roads card to the game's card pack
             player.reduceCardCount("build roads card", 1);
             this->cardsPack->increaseCardQuantity("build roads card");
+            return true;
         }
     }
+    return false;
 }
 
 // The player gets the first 2 selected cards for free
-void Catan::useAbundantYearCard(Player &player, string firstWantedCard, string secondWantedCard)
+bool Catan::useAbundantYearCard(Player &player, string firstWantedCard, string secondWantedCard)
 {
     if (isPlayersTurn(player))
     {
-        // Checking that the player has the abundant year card. If he doesn't, throw invalid argument
+        // Checking that the player has the abundant year card
         if (player.getCardCount("abundant year card") == 0)
         {
-            throw invalid_argument(" You don't have abundant year cards");
+            cout<<" You don't have abundant year cards"<<endl;
+            return false;
         }
         else
         {
@@ -210,12 +221,14 @@ void Catan::useAbundantYearCard(Player &player, string firstWantedCard, string s
             // Returning the abundant year card to the game's card pack
             player.reduceCardCount("abundant year card", 1);
             this->cardsPack->increaseCardQuantity("abundant year card");
+            return true;
         }
     }
+    return false;
 }
 
 // The player trades 4 of their resources for 1 of the bank's resources
-void Catan::tradeWithBank(Player &player, string playerResource, string wantedResource)
+bool Catan::tradeWithBank(Player &player, string playerResource, string wantedResource)
 {
 
     if (isPlayersTurn(player))
@@ -223,18 +236,21 @@ void Catan::tradeWithBank(Player &player, string playerResource, string wantedRe
         // Checking if the player has at least 4 resources cards
         if (player.getResourceCount(playerResource) < 4)
         {
-            throw invalid_argument("You don't have enough resources to trade");
+            cout<<"You don't have enough resources to trade"<<endl;
+            return false;
         }
         else
         {
             player.reduceResource(playerResource, 4);
             player.addResource(wantedResource, 1);
+            return true;
         }
     }
+    return false;
 }
 
 // Trading resources with other players
-void Catan::tradeResourcesWithPlayers(Player &player, Player &otherPlayer, string playerResource, string otherResource, int giveQuantity, int takeQuantity)
+bool Catan::tradeResourcesWithPlayers(Player &player, Player &otherPlayer, string playerResource, string otherResource, int giveQuantity, int takeQuantity)
 {
     if (isPlayersTurn(player))
     {
@@ -249,12 +265,14 @@ void Catan::tradeResourcesWithPlayers(Player &player, Player &otherPlayer, strin
         // Checking if the player has enough recource cards to trade
         if (player.getResourceCount(playerResource) < giveQuantity)
         {
-            throw invalid_argument("You don't have enough to trade.");
+            cout<<"You don't have enough to trade."<<endl;
+            return false;
         }
         // Checking if the other player has enough recource cards to trade
         if (otherPlayer.getResourceCount(otherResource) < takeQuantity)
         {
-            throw invalid_argument("The other player doesn't have enough to trade.");
+            cout<<"The other player doesn't have enough to trade."<<endl;
+            return false;
         }
 
         // Updating the resources of each of the players
@@ -262,6 +280,7 @@ void Catan::tradeResourcesWithPlayers(Player &player, Player &otherPlayer, strin
         player.reduceResource(playerResource, giveQuantity);
         otherPlayer.addResource(playerResource, giveQuantity);
         otherPlayer.reduceResource(otherResource, takeQuantity);
+        return true;
         /**
           }
          The other player doesn't want to trade
@@ -271,10 +290,11 @@ void Catan::tradeResourcesWithPlayers(Player &player, Player &otherPlayer, strin
         }
     */
     }
+    return false;
 }
 
 // Trading cards with other players
-void Catan::tradeCardsWithPlayers(Player &player, Player &otherPlayer, string playerCard, string otherResource, int giveQuantity, int takeQuantity)
+bool Catan::tradeCardsWithPlayers(Player &player, Player &otherPlayer, string playerCard, string otherResource, int giveQuantity, int takeQuantity)
 {
     if (isPlayersTurn(player))
     {
@@ -290,11 +310,13 @@ void Catan::tradeCardsWithPlayers(Player &player, Player &otherPlayer, string pl
         // Checking if both of the players has enough cards to trade
         if (player.getCardCount(playerCard) < giveQuantity)
         {
-            throw invalid_argument("You don't have enough to trade.");
+            cout<<"You don't have enough to trade."<<endl;
+            return false;
         }
         if (otherPlayer.getResourceCount(otherResource) < takeQuantity)
         {
-            throw invalid_argument("The other player doesn't have enough to trade.");
+            cout<<"The other player doesn't have enough to trade."<<endl;
+            return false;
         }
 
         // If the player wants to trade with the knight card
@@ -309,6 +331,7 @@ void Catan::tradeCardsWithPlayers(Player &player, Player &otherPlayer, string pl
         player.addResource(otherResource, takeQuantity);
         otherPlayer.addCard(playerCard);
         otherPlayer.reduceResource(otherResource, takeQuantity);
+        return true;
         /**
             }
         // The other player doesn't want to trade
@@ -318,6 +341,7 @@ void Catan::tradeCardsWithPlayers(Player &player, Player &otherPlayer, string pl
         }
     */
     }
+    return false;
 }
 
 // Roll a 6-sided dice
@@ -365,11 +389,11 @@ void Catan::firstTurn(Player &player, size_t firstSettlement, size_t firstRoad1,
         this->board->placeSettlement(player, firstSettlement);
         // The player gets one resource from each land that adjacent to his settlement
         string land;
-        // Iterating throw all the tiles on the board
+        // Iterating through all the tiles on the board
         for (size_t i = 0; i < board->getBoartTiles().size(); i++)
         {
             bool temp = false;
-            // For each tile, iterating throw all the vertices that adjacent to it
+            // For each tile, iterating through all the vertices that adjacent to it
             for (size_t j = 0; j < board->getBoartTiles()[i]->getAdjacentVertices().size(); j++)
             {
                 /*If one of the tile vertices is the vertex that the player placed settelment on,
@@ -392,7 +416,7 @@ void Catan::firstTurn(Player &player, size_t firstSettlement, size_t firstRoad1,
         for (size_t i = 0; i < board->getBoartTiles().size(); i++)
         {
             bool temp = false;
-            // For each tile, iterating throw all the vertices that adjacent to it
+            // For each tile, iterating through all the vertices that adjacent to it
             for (size_t j = 0; j < board->getBoartTiles()[i]->getAdjacentVertices().size(); j++)
             {
                 /*If one of the tile vertices is the vertex that the player placed settelment on,
@@ -413,19 +437,28 @@ void Catan::firstTurn(Player &player, size_t firstSettlement, size_t firstRoad1,
     }
 }
 
-void Catan::placeSettlement(Player &player, size_t vertexNum)
+bool Catan::placeSettlement(Player &player, size_t vertexNum)
 {
     if (isPlayersTurn(player))
     {
-        // If the player doesn't have enough resources to build a settlement, throw an exception
+        bool message=false;
+        // If the player doesn't have enough resources to build a settlement
         if (this->currentPlayer->getResourceCount("Brick") < 1 || this->currentPlayer->getResourceCount("Wood") < 1 ||
             this->currentPlayer->getResourceCount("Wool") < 1 || this->currentPlayer->getResourceCount("Oats") < 1)
         {
-            throw invalid_argument("You don't have enough resources to build a settlement");
+            cout<<"You don't have enough resources to build a settlement"<<endl;
+            return message;
         }
-
-        this->board->placeSettlement(player, vertexNum);
-
+        message= this->board->placeSettlement(player, vertexNum);
+        /*
+        int v1;
+        while(message==false){
+            cout<<"The vertex you chose is not valid, please choose another one";
+            cin>>v1;
+            message= this->board->placeSettlement(player, v1);
+        }
+        */
+       if(message==true){
         // The player gets one victory point for building a settlement
         player.addVictoryPoints(1);
 
@@ -434,45 +467,74 @@ void Catan::placeSettlement(Player &player, size_t vertexNum)
         player.reduceResource("Wool", 1);
         player.reduceResource("Wood", 1);
         player.reduceResource("Oats", 1);
+       }
+        return message;
     }
+    return false;
 }
 
-void Catan::placeCity(Player &player, size_t vertexNum)
+bool Catan::placeCity(Player &player, size_t vertexNum)
 {
+    bool message=false;
     if (isPlayersTurn(player))
     {
         // If the player doesn't have enough resources to build a city, throw an exception
         if (this->currentPlayer->getResourceCount("Iron") < 3 || this->currentPlayer->getResourceCount("Oats") < 2)
         {
-            throw invalid_argument("You don't have enough resources to build city");
+            cout<<"You don't have enough resources to build city"<<endl;
+            return false;
         }
-        this->board->placeCity(player, vertexNum);
-
+        message= this->board->placeCity(player, vertexNum);
+        /*
+        int v1;
+        while(message==false){
+            cout<<"The vertex you chose is not valid, please choose another one";
+            cin>>v1;
+            message= this->board->placeCity(player, v1);
+        }
+        */
+       if(message==true){
         // The player gets one more victory point for upgrading from settlement to a city
         player.addVictoryPoints(1);
 
         // Decrease the resources that the player need to pay for building a city
         player.reduceResource("Iron", 3);
         player.reduceResource("Oats", 2);
+       }
+        return message;
     }
+    return false;
 }
 
-void Catan::placeRoad(Player &player, size_t firstVertex, size_t secondVertex)
+bool Catan::placeRoad(Player &player, size_t firstVertex, size_t secondVertex)
 {
+    bool message=false;
     if (isPlayersTurn(player))
     {
-        // If the player doesn't have enough resources to build a road, throw an exception
+        //Check if the player have enough resources to build a road
         if (this->currentPlayer->getResourceCount("Brick") < 1 || this->currentPlayer->getResourceCount("Wood") < 1)
         {
-            throw invalid_argument("You don't have enough resources to build a road");
+            cout<<"You don't have enough resources to build a road"<<endl;
+            return message;
         }
 
-        this->board->placeRoad(player, firstVertex, secondVertex);
-
+        message= this->board->placeRoad(player, firstVertex, secondVertex);
+        /*
+        int v1,v2;
+        while(message==false){
+            cout<<"The vertices you chose is not valid";
+            cin>>v1>>v2;
+            message= this->board->placeCity(player, v1,v2);
+        }
+        */
+       if(message==true){
         // Decrease the resources that the player needs to pay for building a road
         player.reduceResource("Brick", 1);
         player.reduceResource("Wood", 1);
+       }
+        return message;
     }
+    return false;
 }
 
 vector<Vertex *> Catan::getBoardVertices()
