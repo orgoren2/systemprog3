@@ -1,0 +1,33 @@
+#Id-9115
+#Email address- orgoren3146@gmail.com
+
+CXX=clang++
+CXXFLAGS=-std=c++11 -Werror -g -Wsign-conversion
+VALGRIND_FLAGS=-v --leak-check=full --show-leak-kinds=all  --error-exitcode=99
+
+SOURCES=Catan.cpp Player.cpp Cards.cpp Tile.cpp Edge.cpp Vertex.cpp Structure.cpp Board.cpp City.cpp Settlement.cpp Road.cpp
+OBJECTS=$(subst .cpp,.o,$(SOURCES))
+
+catan: demo
+	./$^
+
+demo: Demo.o $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $^ -o demo
+
+test: TestCounter.o Test.o $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $^ -o test
+	./test
+
+tidy:
+	clang-tidy $(SOURCES) -checks=bugprone-*,clang-analyzer-*,cppcoreguidelines-*,performance-*,portability-*,readability-*,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-owning-memory --warnings-as-errors=-* --
+
+
+valgrind: demo test
+	valgrind --tool=memcheck $(VALGRIND_FLAGS) ./demo 2>&1 | { egrep "lost| at " || true; }
+	valgrind --tool=memcheck $(VALGRIND_FLAGS) ./test 2>&1 | { egrep "lost| at " || true; }
+
+%.o: %.cpp %.hpp
+	$(CXX) $(CXXFLAGS) --compile $< -o $@
+
+clean:
+	rm -f *.o demo test
