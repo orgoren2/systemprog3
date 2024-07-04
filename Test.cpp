@@ -142,6 +142,9 @@ TEST_CASE("Testing buying development card when the player doesn't have enough r
         Cards cardsPack;
         Catan catan(p1, p2, p3, board, cardsPack);
         catan.setPlayerTurnsOrder();
+        p3.addResource("Iron",1);
+        p3.addResource("Wool",1);
+        p3.addResource("Oats",1);
         CHECK(p3.buyDevelopmentCard()==true);
         int temp = 0;
         // Checking if the player got one of the development cards
@@ -173,9 +176,9 @@ TEST_CASE("Trading tests")
     {
         p1.addResource("Brick", 7);
         CHECK(p1.tradeWithBank("Brick", "Oats")==true);
-        CHECK((p1.getResourceCount("Brick") == 4) == true);
+        CHECK((p1.getResourceCount("Brick") == 3) == true);
 
-        CHECK((p1.getResourceCount("Oats") == 2) == true);
+        CHECK((p1.getResourceCount("Oats") == 1) == true);
     }
 
     SUBCASE("Test trade resources with players when the players doesn't have enough resources")
@@ -192,11 +195,12 @@ TEST_CASE("Trading tests")
     {
 
         p3.addResource("Brick", 5);
+        p1.addResource("Oats",1);
         CHECK(p1.tradeResourcesWithPlayers(p3, "Oats", "Brick", 1, 5)==true);
         CHECK((p1.getResourceCount("Oats") == 0) == true);
-        CHECK((p1.getResourceCount("Brick") == 6) == true);
-        CHECK((p3.getResourceCount("Oats") == 2) == true);
-        CHECK((p3.getResourceCount("Brick") == 1) == true);
+        CHECK((p1.getResourceCount("Brick") == 5) == true);
+        CHECK((p3.getResourceCount("Oats") == 1) == true);
+        CHECK((p3.getResourceCount("Brick") == 0) == true);
     }
 
     SUBCASE("Test trade cards with friends when the players doesn't have enough resources")
@@ -217,8 +221,8 @@ TEST_CASE("Trading tests")
         CHECK(p1.tradeCardsWithPlayers(p3, "knight card", "Brick", 1, 1)==true);
         CHECK((p1.getCardCount("knight card") == 0) == true);
         CHECK((p3.getCardCount("knight card") == 1) == true);
-        CHECK((p1.getResourceCount("Brick") == 2) == true);
-        CHECK((p3.getResourceCount("Brick") == 2) == true);
+        CHECK((p1.getResourceCount("Brick") == 1) == true);
+        CHECK((p3.getResourceCount("Brick") == 1) == true);
     }
 }
 
@@ -236,15 +240,17 @@ TEST_CASE("Testing use monopoly card when the player doesn't have the card")
     SUBCASE("Testing use monopoly card when the player have the card")
     {
         p1.addCard("monopoly card");
+        p2.addResource("Brick",1);
+        p3.addResource("Brick",1);
         CHECK(p1.useMonopolyCard("Brick")==true);
-
-        CHECK((p1.getResourceCount("Brick") == 3) == true);
+        CHECK((p1.getResourceCount("Brick") == 2) == true);
         CHECK((p1.getCardCount("monopoly card") == 0) == true);
         CHECK((p2.getResourceCount("Brick") == 0) == true);
         CHECK((p3.getResourceCount("Brick") == 0) == true);
     }
 }
-/**
+
+
 TEST_CASE("Testing use build roads card when the player doesn't have the card")
 {
     Player p1("Amit", 27);
@@ -254,28 +260,33 @@ TEST_CASE("Testing use build roads card when the player doesn't have the card")
     Cards cardsPack;
     Catan catan(p1, p2, p3, board, cardsPack);
     catan.setPlayerTurnsOrder();
+    p1.addResource("Brick",1);
+    p1.addResource("Wood",1);
+    p1.addResource("Wool",1);
+    p1.addResource("Oats",1);
+
     p1.placeSettlement(10);
-    CHECK(p1.useBuildRoadsCard(10,11,9,10)==false);
+    CHECK(p1.useBuildRoadsCard(10, 11, 9, 10) == false);
     SUBCASE("Testing use build roads card when the player have the card")
     {
+        
+        p1.addCard("build roads card");
+        p1.addResource("Brick",2);
+        p1.addResource("Wood",2);
 
-        p1.addCard("monopoly card");
-        CHECK(p1.useBuildRoadsCard(10,11,9,10)==true);
+        CHECK(p1.useBuildRoadsCard(10, 11, 9, 10) == true);
         for (size_t i = 0; i < catan.getBoardEdge()[10].size(); i++)
-    {
-        if (catan.getBoardEdge()[10][i]->getFirstVertex()->getVertexNumber() == 10 && catan.getBoardEdge()[10][i]->getSecondVertex()->getVertexNumber() == 11 ||
-            catan.getBoardEdge()[10][i]->getFirstVertex()->getVertexNumber() == 11 && catan.getBoardEdge()[10][i]->getSecondVertex()->getVertexNumber() == 10||
-            catan.getBoardEdge()[10][i]->getFirstVertex()->getVertexNumber() == 9 && catan.getBoardEdge()[10][i]->getSecondVertex()->getVertexNumber() == 10 ||
-            catan.getBoardEdge()[10][i]->getFirstVertex()->getVertexNumber() == 10 && catan.getBoardEdge()[10][i]->getSecondVertex()->getVertexNumber() == 9)
         {
-            CHECK((catan.getBoardEdge()[10][i]->getRoad()->getOwner()->getPlayerName() == "Amit") == true);
+            if (catan.getBoardEdge()[10][i]->getFirstVertex()->getVertexNumber() == 10 && catan.getBoardEdge()[10][i]->getSecondVertex()->getVertexNumber() == 11 ||
+                catan.getBoardEdge()[10][i]->getFirstVertex()->getVertexNumber() == 11 && catan.getBoardEdge()[10][i]->getSecondVertex()->getVertexNumber() == 10)
+            {
+                CHECK((catan.getBoardEdge()[10][i]->getRoad()->getOwner()->getPlayerName() == "Amit") == true);
+            }
         }
-    }
-    
     }
 }
 
-*/
+
 TEST_CASE("set resource to land test")
 {
 
@@ -302,8 +313,8 @@ TEST_CASE("Testing use abundant year card when the player doesn't hasve the card
     {
         p1.addCard("abundant year card");
         CHECK(p1.useAbundantYearCard("Brick", "Oats")==true);
-        CHECK((p1.getResourceCount("Brick") == 2) == true);
-        CHECK((p1.getResourceCount("Oats") == 2) == true);
+        CHECK((p1.getResourceCount("Brick") == 1) == true);
+        CHECK((p1.getResourceCount("Oats") == 1) == true);
     }
 
 
@@ -312,11 +323,11 @@ TEST_CASE("Testing use abundant year card when the player doesn't hasve the card
 TEST_CASE("Testing initialize Resources")
 {
     Player p1("Amit", 25);
-    CHECK((p1.getResourceCount("Brick") == 1) == true);
-    CHECK((p1.getResourceCount("Wood") == 1) == true);
-    CHECK((p1.getResourceCount("Wool") == 1) == true);
-    CHECK((p1.getResourceCount("Oats") == 1) == true);
-    CHECK((p1.getResourceCount("Iron") == 1) == true);
+    CHECK((p1.getResourceCount("Brick") == 0) == true);
+    CHECK((p1.getResourceCount("Wood") == 0) == true);
+    CHECK((p1.getResourceCount("Wool") == 0) == true);
+    CHECK((p1.getResourceCount("Oats") == 0) == true);
+    CHECK((p1.getResourceCount("Iron") == 0) == true);
 }
 
 TEST_CASE("Testing initialize cards")
@@ -340,8 +351,8 @@ TEST_CASE("Player's getters and setters tests")
     p1.reduceCardCount("knight card", 1);
     CHECK((p1.getCardCount("knight card") == 0) == true);
     p1.addResource("Oats", 1);
-    CHECK((p1.getResourceCount("Oats") == 2) == true);
-    p1.reduceResource("Oats", 2);
+    CHECK((p1.getResourceCount("Oats") == 1) == true);
+    p1.reduceResource("Oats", 1);
     CHECK((p1.getResourceCount("Oats") == 0) == true);
     p1.addVictoryPoints(2);
     CHECK((p1.getVictoryPoints() == 2) == true);
@@ -391,6 +402,10 @@ TEST_CASE("Place settlement test when there is another players settlement in the
     Cards cardsPack;
     Catan catan(p1, p2, p3, board, cardsPack);
     catan.setPlayerTurnsOrder();
+    p1.addResource("Brick", 2);
+    p1.addResource("Wood", 2);
+    p1.addResource("Wool", 2);
+    p1.addResource("Oats", 2);
     CHECK(p1.placeSettlement(10)==true);
     catan.endTurn();
     CHECK(p3.placeSettlement(11)==false);
@@ -405,6 +420,10 @@ TEST_CASE("Place settlement test")
     Cards cardsPack;
     Catan catan(p1, p2, p3, board, cardsPack);
     catan.setPlayerTurnsOrder();
+    p1.addResource("Brick", 2);
+    p1.addResource("Wood", 2);
+    p1.addResource("Wool", 2);
+    p1.addResource("Oats", 2);
     CHECK(p1.placeSettlement(10)==true);
     CHECK(catan.getBoardVertices()[10]->getStructure()->getOwner()->getPlayerName() == "Amit");
 }
@@ -506,6 +525,10 @@ TEST_CASE("Place city test when the place is one of the player's settlements")
     catan.setPlayerTurnsOrder();
     p1.addResource("Iron", 5);
     p1.addResource("Oats", 5);
+    p1.addResource("Brick", 2);
+    p1.addResource("Wood", 2);
+    p1.addResource("Wool", 2);
+   
     p1.placeSettlement(10);
     CHECK(p1.placeCity(10)==true);
     CHECK((catan.getBoardVertices()[10]->getStructure()->getOwner()->getPlayerName() == p1.getPlayerName()) == true);

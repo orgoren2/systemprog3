@@ -16,11 +16,11 @@ Player::Player(string name, int age) : name(name), age(age), victoryPoints(0), g
 // Initialize player's resources with default values
 void Player::initializeResources()
 {
-    this->resources["Wood"] = 1;
-    this->resources["Brick"] = 1;
-    this->resources["Wool"] = 1;
-    this->resources["Oats"] = 1;
-    this->resources["Iron"] = 1;
+    this->resources["Wood"] = 0;
+    this->resources["Brick"] = 0;
+    this->resources["Wool"] = 0;
+    this->resources["Oats"] = 0;
+    this->resources["Iron"] = 0;
 }
 
 // Initialize player's cards with default values

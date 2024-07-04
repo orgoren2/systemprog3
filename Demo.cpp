@@ -18,7 +18,6 @@
 
 using namespace std;
 using namespace ariel;
-
 int main()
 {
     Player p1("Amit",22);
@@ -43,11 +42,13 @@ int main()
     catan.checkVictory(p3);
     catan.endTurn();
     
+    p2.rollDice();
     p2.buyDevelopmentCard();
     p2.placeRoad(29,30);
     catan.checkVictory(p2);
     catan.endTurn();
     
+    p1.rollDice();
     p1.buyDevelopmentCard();
     p1.placeRoad(48,49);
     catan.checkVictory(p1);
