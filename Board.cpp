@@ -337,7 +337,7 @@ bool Board::placeRoad(Player &player, size_t firstVertex, size_t secondVertex)
                 return false;
             }
             // Create a new road and set it on the edge
-            Road road (player);
+            Road *road=new Road (player);
             edge->setRoad(road);
             cout <<player.getPlayerName()<< " placed road successfully between vertices " << firstVertex << " and " << secondVertex << endl;
             return true;

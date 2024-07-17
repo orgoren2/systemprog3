@@ -627,7 +627,7 @@ TEST_CASE("Road set and get test")
 TEST_CASE("Edge getters and setters test")
 {
     Player p1("Or", 26);
-    Road r(p1);
+    Road *r=new Road(p1);
     Vertex v1(1);
     Vertex v2(2);
     Edge e(v1, v2);

@@ -12,9 +12,9 @@ namespace ariel
     Edge::Edge(Vertex *firstVertex, Vertex *secondVertex):firstVertex(firstVertex), secondVertex(secondVertex), road(nullptr){};
 
     // Setter for road
-    void Edge::setRoad(Road& road)
+    void Edge::setRoad(Road* road)
     {
-        this->road = &road;
+        this->road = road;
     }
 
     // Getter for road
