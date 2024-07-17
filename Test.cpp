@@ -592,9 +592,11 @@ TEST_CASE("Set and get structure vertex test")
 TEST_CASE("Tile set and get test")
 {
     Tile t1("Meadow", 2);
-    vector<Vertex *> adjacentVertices;
-    adjacentVertices.push_back(new Vertex(1));
-    adjacentVertices.push_back(new Vertex(2));
+    vector<Vertex*> adjacentVertices;
+    Vertex first(1);
+    Vertex second(2);
+    adjacentVertices.push_back(&first);
+    adjacentVertices.push_back(&second);
     t1.setAdjacentVertices(adjacentVertices);
     CHECK((t1.getLand() == "Meadow") == true);
     CHECK((t1.getLandNumber() == 2) == true);
@@ -625,12 +627,12 @@ TEST_CASE("Road set and get test")
 TEST_CASE("Edge getters and setters test")
 {
     Player p1("Or", 26);
-    Road *r = new Road(p1);
-    Vertex *v1 = new Vertex(1);
-    Vertex *v2 = new Vertex(2);
+    Road r(p1);
+    Vertex v1(1);
+    Vertex v2(2);
     Edge e(v1, v2);
     CHECK((e.getFirstVertex()->getVertexNumber() == 1) == true);
     e.setRoad(r);
     CHECK((e.getRoad()->getOwner()->getPlayerName() == "Or") == true);
-    delete r;
+    
 }

@@ -22,10 +22,11 @@ namespace ariel
         Road *road;
 
     public:
+        Edge(Vertex &firstVertex, Vertex &secondVertex);
         Edge(Vertex *firstVertex, Vertex *secondVertex);
         
         // Getters and setters
-        void setRoad(Road *road);
+        void setRoad(Road &road);
         Road *getRoad();
         Vertex *getFirstVertex();
         Vertex *getSecondVertex();
