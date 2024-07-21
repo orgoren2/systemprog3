@@ -29,6 +29,7 @@ namespace ariel
 
     public:
         Board();
+        ~Board();
         void initializeBoard();
         void distribueResourcesByDice(int diceRoll);
         bool placeSettlement(Player &player, size_t vertexNum);

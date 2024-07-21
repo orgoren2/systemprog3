@@ -23,6 +23,31 @@ Board::Board() : tiles(19, nullptr), vertices(54, nullptr), edges()
     initializeBoard();
 }
 
+// Destructor
+Board::~Board()
+{
+    // Free memory for tiles
+    for (size_t i = 0; i < 19; ++i)
+    {
+        delete this->tiles[i];
+    }
+
+    // Free memory for vertices
+    for (size_t i = 0; i < 54; ++i)
+    {
+        delete this->vertices[i];
+    }
+
+    // Free memory for edges
+    for (size_t i = 0; i < 54; ++i)
+    {
+        for (size_t j = 0; j < edges[i].size(); ++j)
+        {
+            delete this->edges[i][j];
+        }
+    }
+}
+
 // Initialize the board with tiles, vertices, and edges
 void Board::initializeBoard()
 {

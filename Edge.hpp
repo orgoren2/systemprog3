@@ -24,7 +24,6 @@ namespace ariel
     public:
         Edge(Vertex& firstVertex, Vertex& secondVertex) : firstVertex(&firstVertex), secondVertex(&secondVertex), road(nullptr){};
         Edge(Vertex *firstVertex, Vertex *secondVertex):firstVertex(firstVertex), secondVertex(secondVertex), road(nullptr){};
-        
         // Getters and setters
         void setRoad(Road *road);
         Road *getRoad();

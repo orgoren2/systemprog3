@@ -7,6 +7,12 @@ using namespace std;
 
 namespace ariel
 {
+    // Destructor 
+    Vertex::~Vertex()
+    {
+        delete structure; 
+    }
+
     // Set the structure for the vertex
     void Vertex::setStructure(Structure *structure)
     {

@@ -587,7 +587,6 @@ TEST_CASE("Set and get structure vertex test")
     v.setStructure(structure);
     CHECK((v.getStructure()->getOwner()->getPlayerName() == "Or") == true);
     CHECK((v.getVertexNumber() == 1) == true);
-    delete structure;
 }
 
 TEST_CASE("Tile set and get test")
@@ -635,6 +634,5 @@ TEST_CASE("Edge getters and setters test")
     CHECK((e.getFirstVertex()->getVertexNumber() == 1) == true);
     e.setRoad(r);
     CHECK((e.getRoad()->getOwner()->getPlayerName() == "Or") == true);
-    delete r;
     
 }

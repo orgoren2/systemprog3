@@ -4,7 +4,7 @@ using namespace std;
 
 namespace ariel
 {
-
+ 
     // Get the type of land
     string Tile::getLand()
     {
