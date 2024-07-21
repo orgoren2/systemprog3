@@ -4,18 +4,6 @@ using namespace std;
 
 namespace ariel
 {
-    // Constructor initializing land and landNumber
-    Tile::Tile(string land, int landNumber)
-    {
-        this->land = land;
-        this->landNumber = landNumber;
-    }
-
-    // Destructor
-    Tile::~Tile()
-    {
-        adjacentVertices.clear();
-    }
 
     // Get the type of land
     string Tile::getLand()

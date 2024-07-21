@@ -16,11 +16,9 @@ namespace ariel
         Player *owner;
 
     public:
-        Structure() : owner(nullptr) {}; 
-        Structure(Player &owner);
+        Structure(Player& owner) : owner(&owner) {};
         Player* getOwner();
         virtual string getType();  
-        virtual ~Structure() = default; 
     };
 }
 

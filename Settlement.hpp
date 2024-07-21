@@ -12,8 +12,7 @@ namespace ariel
     class Settlement : public Structure
     {
     public:
-        Settlement(Player &owner) : Structure(owner) {}
-        ~Settlement() override = default;
+        Settlement(Player &owner) : Structure(owner) {};
         string getType() override;
     };
 }

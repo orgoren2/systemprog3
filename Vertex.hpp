@@ -19,7 +19,6 @@ namespace ariel
 
     public:
         Vertex(int vertexNumber) : vertexNumber(vertexNumber), structure(nullptr){};
-        ~Vertex();
         void setStructure(Structure *structure);
         Structure *getStructure();
         int getVertexNumber();

@@ -20,8 +20,7 @@
             vector<Vertex *> adjacentVertices;
 
         public:
-            Tile(string land, int landNumber);
-            ~Tile();
+            Tile(string land, int landNumber):land(land),landNumber(landNumber){};
             string getLand();
             int getLandNumber();
             void setAdjacentVertices(vector<Vertex *> &adjacentVertices);

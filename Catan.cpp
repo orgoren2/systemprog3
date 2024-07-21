@@ -23,11 +23,6 @@ Catan::Catan(Player &p1, Player &p2, Player &p3, Board &board, Cards &cardspack)
     srand(time(0));
 }
 
-// Destructor
-Catan::~Catan()
-{
-    this->players.clear();
-}
 
 // Setting the players turns order
 void Catan::setPlayerTurnsOrder()

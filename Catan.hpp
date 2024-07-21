@@ -30,8 +30,6 @@ namespace ariel
 
     public:
         Catan(Player &p1, Player &p2, Player &p3, Board &board, Cards &cardsPack);
-        ~Catan(); // Destructor
-
         void setPlayerTurnsOrder();
         void setBoard(Board &board);
         bool checkVictory(Player &player) const;

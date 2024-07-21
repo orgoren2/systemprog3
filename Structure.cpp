@@ -5,9 +5,7 @@ using namespace std;
 
 namespace ariel
 {
-    // Constructor initializing owner
-    Structure::Structure(Player& owner) : owner(&owner) {}
-
+    
     // Get the owner of the structure
     Player* Structure::getOwner() 
     {

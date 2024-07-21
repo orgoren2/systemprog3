@@ -16,8 +16,8 @@
             Player *owner;
 
         public:
-            Road() : owner(nullptr) {}
-            Road(Player &owner) : owner(&owner) {}
+            Road() : owner(nullptr) {};
+            Road(Player &owner) : owner(&owner) {};
             Player *getOwner();
         };
     }

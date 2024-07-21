@@ -12,7 +12,7 @@ namespace ariel
     class City : public Structure
     {
     public:
-        City(Player& owner);
+        City(Player &owner) : Structure(owner){};
         string getType() override;
     };
 }

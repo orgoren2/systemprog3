@@ -24,7 +24,7 @@ namespace ariel
         Catan *game;
 
     public:
-        Player() : name(""), age(0), victoryPoints(0), game(nullptr) {}
+        Player() : name(""), age(0), victoryPoints(0), game(nullptr) {};
         Player(string name, int age);
 
         // Initialize resources
